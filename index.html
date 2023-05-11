@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Drag and Drop Square</title>
+  <style>
+    #square {
+      width: 100px;
+      height: 100px;
+      background-color: blue;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .draggable {
+      cursor: move;
+    }
+  </style>
+</head>
+<body>
+  <div id="square" class="draggable"></div>
+
+  <script>
+    let active = false;
+    let currentX;
+    let currentY;
+    let initialX;
+    let initialY;
+    let xOffset = 0;
+    let yOffset = 0;
+
+    const square = document.getElementById("square");
+
+    // Function to handle mouse down event
+    const dragStart = (e) => {
+      initialX = e.clientX - xOffset;
+      initialY = e.clientY - yOffset;
+
+      if (e.target === square) {
+        active = true;
+      }
+    };
+
+    // Function to handle mouse up event
+    const dragEnd = (e) => {
+      initialX = currentX;
+      initialY = currentY;
+
+      active = false;
+    };
+
+    // Function to handle mouse move event
+    const drag = (e) => {
+      if (active) {
+        e.preventDefault();
+
+        currentX = e.clientX - initialX;
+        currentY = e.clientY - initialY;
+
+        xOffset = currentX;
+        yOffset = currentY;
+
+        setTranslate(currentX, currentY, square);
+      }
+    };
+
+    // Function to move the square
+    const setTranslate = (xPos, yPos, el) => {
+      el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+    };
+
+    // Add event listeners to the square
+    square.addEventListener("mousedown", dragStart);
+    square.addEventListener("mouseup", dragEnd);
+    square.addEventListener("mousemove", drag);
+  </script>
+</body>
+</html>
